@@ -1,4 +1,4 @@
-module github.com/blackboxai/blerrors
+module github.com/BLAgency/BLerrors
 
 go 1.24.0
 
