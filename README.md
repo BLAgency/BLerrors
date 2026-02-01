@@ -5,7 +5,7 @@
 ## Установка
 
 ```bash
-go get github.com/blackboxai/blerrors
+go get github.com/BLAgency/BLerrors
 ```
 
 ## Быстрый старт
@@ -14,7 +14,7 @@ go get github.com/blackboxai/blerrors
 
 ```go
 import (
-    "github.com/blackboxai/blerrors"
+    "github.com/BLAgency/BLerrors"
 )
 ```
 
@@ -130,7 +130,7 @@ r.Use(blerrors.RequestIDMiddleware)
 ### 1. Добавьте зависимость
 
 ```bash
-go get github.com/blackboxai/blerrors
+go get github.com/BLAgency/BLerrors
 ```
 
 ### 2. Замените текущую обработку ошибок
