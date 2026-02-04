@@ -11,8 +11,8 @@ func (e *AppError) Error() string {
 	return fmt.Sprintf("[%s] %s", e.Code, e.Message)
 }
 
-// NewAppError создает новую ошибку приложения
-func NewAppError(code ErrorCode, message, priority, errorCode, errorType, userID string) *AppError {
+// NewAppError создает новую ошибку приложения с базовыми параметрами
+func NewAppError(code ErrorCode, message string) *AppError {
 	now := time.Now()
 	return &AppError{
 		Code:              code,
@@ -21,10 +21,10 @@ func NewAppError(code ErrorCode, message, priority, errorCode, errorType, userID
 		HumanReadableTime: now.Format("2006-01-02 15:04:05"),
 		Trace:             getStackTrace(),
 		Module:            getCurrentModule(),
-		Priority:          priority,
-		ErrorCode:         errorCode,
-		ErrorType:         errorType,
-		UserID:            userID,
+		Priority:          "низкий",    // значение по умолчанию
+		ErrorCode:         "",          // будет установлено через WithErrorCode
+		ErrorType:         "системная", // значение по умолчанию
+		UserID:            "unknown",   // значение по умолчанию
 	}
 }
 
@@ -49,6 +49,66 @@ func (e *AppError) WithRequestID(requestID string) *AppError {
 // WithoutTrace возвращает ошибку без стека вызовов (для продакшена)
 func (e *AppError) WithoutTrace() *AppError {
 	e.Trace = nil
+	return e
+}
+
+// WithPriority устанавливает приоритет ошибки
+func (e *AppError) WithPriority(priority string) *AppError {
+	e.Priority = priority
+	return e
+}
+
+// WithErrorCode устанавливает код ошибки
+func (e *AppError) WithErrorCode(errorCode string) *AppError {
+	e.ErrorCode = errorCode
+	return e
+}
+
+// WithErrorType устанавливает тип ошибки
+func (e *AppError) WithErrorType(errorType string) *AppError {
+	e.ErrorType = errorType
+	return e
+}
+
+// WithUserID устанавливает ID пользователя
+func (e *AppError) WithUserID(userID string) *AppError {
+	e.UserID = userID
+	return e
+}
+
+// IsCritical устанавливает критический приоритет
+func (e *AppError) IsCritical() *AppError {
+	e.Priority = PriorityCritical
+	return e
+}
+
+// IsHigh устанавливает высокий приоритет
+func (e *AppError) IsHigh() *AppError {
+	e.Priority = PriorityHigh
+	return e
+}
+
+// IsMedium устанавливает средний приоритет
+func (e *AppError) IsMedium() *AppError {
+	e.Priority = PriorityMedium
+	return e
+}
+
+// IsLow устанавливает низкий приоритет
+func (e *AppError) IsLow() *AppError {
+	e.Priority = PriorityLow
+	return e
+}
+
+// IsSystemError устанавливает тип ошибки как системная
+func (e *AppError) IsSystemError() *AppError {
+	e.ErrorType = ErrorTypeSystem
+	return e
+}
+
+// IsUserError устанавливает тип ошибки как пользовательская
+func (e *AppError) IsUserError() *AppError {
+	e.ErrorType = ErrorTypeUser
 	return e
 }
 

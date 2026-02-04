@@ -11,7 +11,7 @@ import (
 )
 
 func TestWriteErrorResponse(t *testing.T) {
-	err := NewAppError(ErrCodeNotFound, "Resource not found", "низкий", "FS001", "пользовательская", "user123").WithModule("test-service")
+	err := NewAppError(ErrCodeNotFound, "Resource not found").WithErrorCode("FS001").IsUserError().WithUserID("user123").WithModule("test-service")
 
 	w := httptest.NewRecorder()
 	WriteErrorResponse(w, err)
@@ -227,7 +227,7 @@ func TestGetRequestID(t *testing.T) {
 
 func TestJSONEncoding(t *testing.T) {
 	// Test that our structs can be properly encoded to JSON
-	err := NewAppError(ErrCodeValidation, "Invalid input", "низкий", "FS001", "пользовательская", "user123").
+	err := NewAppError(ErrCodeValidation, "Invalid input").WithErrorCode("FS001").IsUserError().WithUserID("user123").
 		WithModule("user-service").
 		WithDetails(map[string]string{"field": "email"}).
 		WithRequestID("req-123")

@@ -16,6 +16,20 @@ const (
 	ErrCodeServiceUnavailable ErrorCode = "SERVICE_UNAVAILABLE"
 )
 
+// Priority levels
+const (
+	PriorityLow      = "низкий"
+	PriorityMedium   = "средний"
+	PriorityHigh     = "высокий"
+	PriorityCritical = "критический"
+)
+
+// Error types
+const (
+	ErrorTypeUser   = "пользовательская"
+	ErrorTypeSystem = "системная"
+)
+
 // AppError - унифицированная структура ошибки
 type AppError struct {
 	Code              ErrorCode   `json:"code"`                 // Уникальный код ошибки
