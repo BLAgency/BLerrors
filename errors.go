@@ -12,13 +12,19 @@ func (e *AppError) Error() string {
 }
 
 // NewAppError создает новую ошибку приложения
-func NewAppError(code ErrorCode, message string) *AppError {
+func NewAppError(code ErrorCode, message, priority, errorCode, errorType, userID string) *AppError {
+	now := time.Now()
 	return &AppError{
-		Code:      code,
-		Message:   message,
-		Timestamp: time.Now().Unix(),
-		Trace:     getStackTrace(),
-		Module:    getCurrentModule(),
+		Code:              code,
+		Message:           message,
+		Timestamp:         now.Unix(),
+		HumanReadableTime: now.Format("2006-01-02 15:04:05"),
+		Trace:             getStackTrace(),
+		Module:            getCurrentModule(),
+		Priority:          priority,
+		ErrorCode:         errorCode,
+		ErrorType:         errorType,
+		UserID:            userID,
 	}
 }
 

@@ -67,7 +67,7 @@ func ErrorRecoveryMiddleware(next http.Handler) http.Handler {
 		defer func() {
 			if err := recover(); err != nil {
 				// Создаем ошибку для паники
-				appErr := NewAppError(ErrCodeInternal, "Internal server error").
+				appErr := NewAppError(ErrCodeInternal, "Internal server error", "критический", "FS001", "системная", "system").
 					WithDetails(fmt.Sprintf("Panic recovered: %v", err)).
 					WithModule("middleware")
 

@@ -18,13 +18,18 @@ const (
 
 // AppError - унифицированная структура ошибки
 type AppError struct {
-	Code      ErrorCode   `json:"code"`                 // Уникальный код ошибки
-	Message   string      `json:"message"`              // Текстовое описание
-	Timestamp int64       `json:"timestamp"`            // Время в Unix timestamp
-	Module    string      `json:"module,omitempty"`     // Модуль/сервис где произошла ошибка
-	Trace     []string    `json:"trace,omitempty"`      // Стек вызовов
-	Details   interface{} `json:"details,omitempty"`    // Дополнительные детали
-	RequestID string      `json:"request_id,omitempty"` // ID запроса для трекинга
+	Code              ErrorCode   `json:"code"`                 // Уникальный код ошибки
+	Message           string      `json:"message"`              // Текстовое описание
+	Timestamp         int64       `json:"timestamp"`            // Время в Unix timestamp
+	HumanReadableTime string      `json:"human_readable_time"`  // Дата и время в человекопонятном представлении
+	Module            string      `json:"module,omitempty"`     // Модуль/сервис где произошла ошибка
+	Trace             []string    `json:"trace,omitempty"`      // Стек вызовов
+	Details           interface{} `json:"details,omitempty"`    // Дополнительные детали
+	RequestID         string      `json:"request_id,omitempty"` // ID запроса для трекинга
+	Priority          string      `json:"priority"`             // Тип приоритета: низкий, средний, высокий, критический
+	ErrorCode         string      `json:"error_code"`           // Код ошибки типа FS001
+	ErrorType         string      `json:"error_type"`           // Тип ошибки: пользовательская/системная
+	UserID            string      `json:"user_id"`              // ID пользователя
 }
 
 // ErrorResponse представляет структуру ответа с ошибкой

@@ -8,7 +8,7 @@ import (
 
 func TestNewAppError(t *testing.T) {
 	message := "Test error message"
-	err := NewAppError(ErrCodeNotFound, message)
+	err := NewAppError(ErrCodeNotFound, message, "низкий", "FS001", "пользовательская", "user123")
 
 	if err.Code != ErrCodeNotFound {
 		t.Errorf("Expected code %s, got %s", ErrCodeNotFound, err.Code)
@@ -32,7 +32,7 @@ func TestNewAppError(t *testing.T) {
 }
 
 func TestAppError_Error(t *testing.T) {
-	err := NewAppError(ErrCodeValidation, "Validation failed")
+	err := NewAppError(ErrCodeValidation, "Validation failed", "низкий", "FS001", "пользовательская", "user123")
 
 	expected := "[VALIDATION_ERROR] Validation failed"
 	if err.Error() != expected {
@@ -41,7 +41,7 @@ func TestAppError_Error(t *testing.T) {
 }
 
 func TestAppError_WithModule(t *testing.T) {
-	err := NewAppError(ErrCodeInternal, "Internal error").WithModule("test-service")
+	err := NewAppError(ErrCodeInternal, "Internal error", "низкий", "FS001", "пользовательская", "user123").WithModule("test-service")
 
 	if err.Module != "test-service" {
 		t.Errorf("Expected module 'test-service', got '%s'", err.Module)
@@ -50,7 +50,7 @@ func TestAppError_WithModule(t *testing.T) {
 
 func TestAppError_WithDetails(t *testing.T) {
 	details := map[string]interface{}{"user_id": 123, "action": "login"}
-	err := NewAppError(ErrCodeUnauthorized, "Unauthorized").WithDetails(details)
+	err := NewAppError(ErrCodeUnauthorized, "Unauthorized", "низкий", "FS001", "пользовательская", "user123").WithDetails(details)
 
 	if err.Details == nil {
 		t.Fatal("Details should not be nil")
@@ -68,7 +68,7 @@ func TestAppError_WithDetails(t *testing.T) {
 
 func TestAppError_WithRequestID(t *testing.T) {
 	requestID := "req-12345"
-	err := NewAppError(ErrCodeBadRequest, "Bad request").WithRequestID(requestID)
+	err := NewAppError(ErrCodeBadRequest, "Bad request", "низкий", "FS001", "пользовательская", "user123").WithRequestID(requestID)
 
 	if err.RequestID != requestID {
 		t.Errorf("Expected request ID '%s', got '%s'", requestID, err.RequestID)
@@ -76,7 +76,7 @@ func TestAppError_WithRequestID(t *testing.T) {
 }
 
 func TestAppError_WithoutTrace(t *testing.T) {
-	err := NewAppError(ErrCodeInternal, "Internal error").WithoutTrace()
+	err := NewAppError(ErrCodeInternal, "Internal error", "низкий", "FS001", "пользовательская", "user123").WithoutTrace()
 
 	if err.Trace != nil {
 		t.Error("Trace should be nil after WithoutTrace()")
@@ -84,7 +84,7 @@ func TestAppError_WithoutTrace(t *testing.T) {
 }
 
 func TestAppError_Chaining(t *testing.T) {
-	err := NewAppError(ErrCodeForbidden, "Access denied").
+	err := NewAppError(ErrCodeForbidden, "Access denied", "низкий", "FS001", "пользовательская", "user123").
 		WithModule("auth-service").
 		WithDetails("Insufficient permissions").
 		WithRequestID("req-abc")
@@ -108,7 +108,7 @@ func TestAppError_Chaining(t *testing.T) {
 
 func TestGetStackTrace(t *testing.T) {
 	// This is an internal function, but we can test it indirectly
-	err := NewAppError(ErrCodeInternal, "Test")
+	err := NewAppError(ErrCodeInternal, "Test", "низкий", "FS001", "пользовательская", "user123")
 
 	if len(err.Trace) == 0 {
 		t.Error("Stack trace should not be empty")
@@ -130,7 +130,7 @@ func TestGetStackTrace(t *testing.T) {
 
 func TestGetCurrentModule(t *testing.T) {
 	// This is an internal function, but we can test it indirectly
-	err := NewAppError(ErrCodeInternal, "Test")
+	err := NewAppError(ErrCodeInternal, "Test", "низкий", "FS001", "пользовательская", "user123")
 
 	if err.Module == "" {
 		t.Error("Module should not be empty")
@@ -167,7 +167,7 @@ func TestErrorCodes(t *testing.T) {
 
 func TestTimestampIsRecent(t *testing.T) {
 	before := time.Now().Unix()
-	err := NewAppError(ErrCodeInternal, "Test")
+	err := NewAppError(ErrCodeInternal, "Test", "низкий", "FS001", "пользовательская", "user123")
 	after := time.Now().Unix()
 
 	if err.Timestamp < before || err.Timestamp > after {
